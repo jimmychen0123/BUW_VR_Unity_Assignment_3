@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SpaceNavigatorDriver;
+//using SpaceNavigatorDriver;
 using UnityEngine.UI;
 
 public class Mover : MonoBehaviour
@@ -15,7 +15,7 @@ public class Mover : MonoBehaviour
     private GameObject birdie;
     private GameObject mainCamera;
 
-    private bool spacemouse_flag = true;
+    private bool spacemouse_flag = false;
 
     // Start is called before the first frame update
     void Start()
