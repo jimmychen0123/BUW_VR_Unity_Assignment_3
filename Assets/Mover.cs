@@ -17,13 +17,23 @@ public class Mover : MonoBehaviour
 
     private bool spacemouse_flag = false;
 
-    /*
-     * Initiate two variables for Exercise 3.2 store the bird’s velocity over frames
-     */
 
     // YOUR CODE - BEGIN
+    
+    //Exercies3.2:initiate two variables to store the bird’s velocity over frames
+    
     float currentAxisX = 0.0f;
     float currentAxisY = 0.0f;
+
+    //Exercise3.3
+    float currentAccelerationX = 0.0f;
+    float currentAccelerationY = 0.0f;
+
+    float currentSpeedX = 0.0f;
+    float currentSpeedY = 0.0f;
+
+
+
     // YOUR CODE - END
 
     // Start is called before the first frame update
@@ -125,7 +135,7 @@ public class Mover : MonoBehaviour
         currentAxisX += X;
         currentAxisY += Y;
 
-        Debug.Log("Value of currentAxisX: " + currentAxisY + " Value of currentAxisY: " + currentAxisY);
+        Debug.Log("Value of currentAxisX: " + currentAxisX + " Value of currentAxisY: " + currentAxisY);
 
 
         //Set the scaling factor: speed
@@ -154,6 +164,36 @@ public class Mover : MonoBehaviour
     void IsotonicAcceleration(float X, float Y)
     {
         // YOUR CODE - BEGIN
+        Debug.Log("Value of isotonicX: " + X + " Value of isotonocY: " + Y);
+
+        currentAccelerationX += X;
+        currentAccelerationY += Y;
+
+        currentSpeedX += currentAccelerationX;
+        currentSpeedY += currentAccelerationY;
+
+        Debug.Log("Value of currentSpeedX: " + currentSpeedX + " Value of currentSpeedY: " + currentSpeedY);
+
+
+        //Set the scaling factor: speed
+        //Refrence: https://docs.unity3d.com/ScriptReference/Input.GetAxis.html
+        float horizontalSpeed = 0.001f;
+        float verticalSpeed = 0.001f;
+
+        /*
+        Time.deltaTime: The completion time in seconds since the last frame (Read Only).
+        This property provides the time between the current and previous frame.
+         */
+
+        //Make it move (meters per second) instead of (meters per frame)
+        horizontalSpeed *= Time.deltaTime;
+        verticalSpeed *= Time.deltaTime;
+
+        // Get the mouse delta. This is not in the range -1...1
+        float h = horizontalSpeed * currentSpeedX;
+        float v = verticalSpeed * currentSpeedY;
+
+        transform.Translate(h, v, 0.0f);
 
         // YOUR CODE - END
     }
