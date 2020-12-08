@@ -4,6 +4,7 @@ using UnityEngine;
 using SpaceNavigatorDriver;
 using UnityEngine.UI;
 
+
 public class Mover : MonoBehaviour
 {
     private int mode = 0;    
@@ -51,6 +52,7 @@ public class Mover : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+      
         UpdateMode();
         InputMapping();
 
@@ -90,6 +92,7 @@ public class Mover : MonoBehaviour
         }
         else // elastic input from joystick/gamepad
         {
+
             elasticX = Input.GetAxis("Horizontal") * 0.15f;
             elasticY = Input.GetAxis("Vertical") * -0.15f;
         }
@@ -201,6 +204,33 @@ public class Mover : MonoBehaviour
     void ElasticPosition(float X, float Y)
     {
         // YOUR CODE - BEGIN
+        
+        //Debug.Log(Input.GetJoystickNames());
+        Debug.Log("Value of Input.GetAxis Horizontal: " + Input.GetAxis("Horizontal") + " Value of Input.GetAxis Vertical: " + Input.GetAxis("Vertical"));
+
+        float factor = 2.0f;
+        factor *= Time.deltaTime;
+        
+
+        //Vector3 originLocation = transform.localPosition;
+
+        if (Mathf.Abs(Input.GetAxis("Horizontal")) < Mathf.Abs(0.19f) && Mathf.Abs(Input.GetAxis("Vertical")) < Mathf.Abs(0.19f)) {
+
+            transform.localPosition = new Vector3(0, 0, 0);
+            X = 0;
+            Y = 0;
+           
+            
+        }
+        else
+        {
+            transform.Translate(X * factor, Y * factor, 0.0f);
+
+        };
+
+        
+
+        
 
         // YOUR CODE - END
     }
@@ -208,6 +238,28 @@ public class Mover : MonoBehaviour
     void ElasticRate(float X, float Y)
     {
         // YOUR CODE - BEGIN
+        Debug.Log("Value of Input.GetAxis Horizontal: " + Input.GetAxis("Horizontal") + " Value of Input.GetAxis Vertical: " + Input.GetAxis("Vertical"));
+        if (Mathf.Abs(Input.GetAxis("Horizontal")) < Mathf.Abs(0.19f) && Mathf.Abs(Input.GetAxis("Vertical")) < Mathf.Abs(0.19f))
+        {
+
+            //transform.localPosition = new Vector3(0, 0, 0);
+            X = 0;
+            Y = 0;
+
+
+        }
+        else
+        {
+            float speed = 2.0f;
+
+            speed *= Time.deltaTime;
+
+            transform.Translate(speed * X, speed * Y, 0.0f);
+
+        };
+       
+
+
 
         // YOUR CODE - END
     }
