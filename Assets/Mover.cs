@@ -33,6 +33,10 @@ public class Mover : MonoBehaviour
     float currentSpeedX = 0.0f;
     float currentSpeedY = 0.0f;
 
+    //Exercise3.5
+    float speedX = 0.0f;
+    float speedY = 0.0f;
+
 
 
     // YOUR CODE - END
@@ -133,8 +137,14 @@ public class Mover : MonoBehaviour
     void IsotonicRate(float X, float Y)
     {
         // YOUR CODE - BEGIN
+
+        /* moving the mouse in a certain direction results in a change of the bird’s velocity, which is in turn applied to a change of the
+         bird’s position every frame. When the mouse stops moving, the bird keeps moving with the previously defined velocity.
+         To stop the bird, the mouse needs to be moved back to its start position. */
+
         Debug.Log("Value of isotonicX: " + X + " Value of isotonocY: " + Y);
 
+        //To store the velocity value 
         currentAxisX += X;
         currentAxisY += Y;
 
@@ -143,8 +153,8 @@ public class Mover : MonoBehaviour
 
         //Set the scaling factor: speed
         //Refrence: https://docs.unity3d.com/ScriptReference/Input.GetAxis.html
-        float horizontalSpeed = 1.0f;
-        float verticalSpeed = 1.0f;
+        float speedFactor = 1.0f;
+        
 
         /*
         Time.deltaTime: The completion time in seconds since the last frame (Read Only).
@@ -152,12 +162,11 @@ public class Mover : MonoBehaviour
          */
 
         //Make it move (meters per second) instead of (meters per frame)
-        horizontalSpeed *= Time.deltaTime;
-        verticalSpeed *= Time.deltaTime; 
+        speedFactor *= Time.deltaTime;
 
-        // Get the mouse delta. This is not in the range -1...1
-        float h = horizontalSpeed * currentAxisX;
-        float v = verticalSpeed * currentAxisY;
+        // Get translate value along x axis(h) and y axis(v) 
+        float h = speedFactor * currentAxisX;
+        float v = speedFactor * currentAxisY;
 
         transform.Translate(h, v, 0.0f);
 
@@ -167,11 +176,19 @@ public class Mover : MonoBehaviour
     void IsotonicAcceleration(float X, float Y)
     {
         // YOUR CODE - BEGIN
+        /*
+         * moving the mouse in a certain direction results in a change of the bird’s acceleration, which is applied to a change of the bird’s velocity every frame, 
+         * which is in turn applied to a change of the bird’s position every frame. 
+         * When the mouse stops moving, the bird keeps getting faster with respect to the previously defined acceleration. 
+         * To stop the bird, the mouse needs to be moved in the inverse direction for the same amount of time.
+         */
         Debug.Log("Value of isotonicX: " + X + " Value of isotonocY: " + Y);
 
+        //To store the acceleration value in each frame
         currentAccelerationX += X;
         currentAccelerationY += Y;
 
+        //To store the speed value in each frame
         currentSpeedX += currentAccelerationX;
         currentSpeedY += currentAccelerationY;
 
@@ -179,22 +196,16 @@ public class Mover : MonoBehaviour
 
 
         //Set the scaling factor: speed
-        //Refrence: https://docs.unity3d.com/ScriptReference/Input.GetAxis.html
-        float horizontalSpeed = 0.001f;
-        float verticalSpeed = 0.001f;
-
-        /*
-        Time.deltaTime: The completion time in seconds since the last frame (Read Only).
-        This property provides the time between the current and previous frame.
-         */
-
+        float speedFactor = 0.0005f;
+        
+        
         //Make it move (meters per second) instead of (meters per frame)
-        horizontalSpeed *= Time.deltaTime;
-        verticalSpeed *= Time.deltaTime;
+        speedFactor *= Time.deltaTime;
 
-        // Get the mouse delta. This is not in the range -1...1
-        float h = horizontalSpeed * currentSpeedX;
-        float v = verticalSpeed * currentSpeedY;
+
+        // Get translate value along x axis(h) and y axis(v) 
+        float h = speedFactor * currentSpeedX;
+        float v = speedFactor * currentSpeedY;
 
         transform.Translate(h, v, 0.0f);
 
@@ -204,18 +215,17 @@ public class Mover : MonoBehaviour
     void ElasticPosition(float X, float Y)
     {
         // YOUR CODE - BEGIN
-        
-        //Debug.Log(Input.GetJoystickNames());
+        /* Moving a joystick in one direction with position control and then releasing it leads to snap back to starting position
+         */
         Debug.Log("Value of Input.GetAxis Horizontal: " + Input.GetAxis("Horizontal") + " Value of Input.GetAxis Vertical: " + Input.GetAxis("Vertical"));
 
-        float factor = 2.0f;
-        factor *= Time.deltaTime;
+        float speedFactor = 2.0f;
+        speedFactor *= Time.deltaTime;
         
-
-        //Vector3 originLocation = transform.localPosition;
-
+        //detect if the joystick snap, values less than the range are mapped to neutral(indicate the joystick is snapped) 
         if (Mathf.Abs(Input.GetAxis("Horizontal")) < Mathf.Abs(0.19f) && Mathf.Abs(Input.GetAxis("Vertical")) < Mathf.Abs(0.19f)) {
 
+            //set the birf back to starting position
             transform.localPosition = new Vector3(0, 0, 0);
             X = 0;
             Y = 0;
@@ -224,13 +234,11 @@ public class Mover : MonoBehaviour
         }
         else
         {
-            transform.Translate(X * factor, Y * factor, 0.0f);
+            transform.Translate(X * speedFactor, Y * speedFactor, 0.0f);
 
         };
 
-        
-
-        
+            
 
         // YOUR CODE - END
     }
@@ -239,10 +247,15 @@ public class Mover : MonoBehaviour
     {
         // YOUR CODE - BEGIN
         Debug.Log("Value of Input.GetAxis Horizontal: " + Input.GetAxis("Horizontal") + " Value of Input.GetAxis Vertical: " + Input.GetAxis("Vertical"));
+        /*
+         * Moving a joystick in one direction with rate control and then releasing it leads to cursor stop
+         */
+
+        //when joystick snaps
         if (Mathf.Abs(Input.GetAxis("Horizontal")) < Mathf.Abs(0.19f) && Mathf.Abs(Input.GetAxis("Vertical")) < Mathf.Abs(0.19f))
         {
 
-            //transform.localPosition = new Vector3(0, 0, 0);
+            //stop translate the bird
             X = 0;
             Y = 0;
 
@@ -266,6 +279,35 @@ public class Mover : MonoBehaviour
     void ElasticAcceleration(float X, float Y)
     {
         // YOUR CODE - BEGIN
+        /* Moving a joystick in one direction with acceleration control and then releasing it leads to
+         * the cursor move continuously with the adjusted velocity
+         */
+        Debug.Log("Value of Input.GetAxis Horizontal: " + Input.GetAxis("Horizontal") + " Value of Input.GetAxis Vertical: " + Input.GetAxis("Vertical"));
+        Debug.Log("Value of X: " + X + " Value of Y: " + Y);
+
+        float speedFactor = 0.05f;
+        speedFactor *= Time.deltaTime;
+
+        if (Mathf.Abs(Input.GetAxis("Horizontal")) < Mathf.Abs(0.19f) && Mathf.Abs(Input.GetAxis("Vertical")) < Mathf.Abs(0.19f))
+        {
+
+            
+            //cursor move with constant velocity after joystick snaps
+            transform.Translate(speedFactor * speedX, speedFactor * speedY, 0.0f);
+
+
+        }
+        else
+        {
+            //Acceleration 
+            speedX += X;
+            speedY += Y;
+
+            transform.Translate(speedFactor * speedX, speedFactor * speedY, 0.0f);
+
+        };
+
+        
 
         // YOUR CODE - END
     }
