@@ -196,7 +196,7 @@ public class Mover : MonoBehaviour
 
 
         //Set the scaling factor: speed
-        float speedFactor = 0.0005f;
+        float speedFactor = 0.0001f;
         
         
         //Make it move (meters per second) instead of (meters per frame)
@@ -392,8 +392,48 @@ public class Mover : MonoBehaviour
     // Excercise 3.7:
     // Which combinations were suitable for this task, which combinations were less suitable? Why? 
     //Come up with potential use cases for the six different combinations.Think in the context of object manipulation and viewpoint navigation.
-    
+
     // YOUR EXPLANATION - BEGIN
+
+    /*
+    Isotonic position use case:
+
+    In a virtual environment, a user takes one teapot and move it from top left corner of cupboard to bottom right. 
+     */
+
+    /*
+    Isotonic rate use case:
+
+    In a virtual environment, a space women in her capsule grabs a paper airplane and launch it. The paper airplane would keep moving with the previously defined velocity.  
+     */
+
+    /*
+    Isotonic acceleration use case:
+
+    Simulation in a virtual environment, user use virtual slider to set the object’s acceleration for experiment purpose.
+     */
+
+    /*
+    Elastic position use case:
+
+    Editing 360 video in immersive environment, editor would like to have a quick preview of fast-forwarding the video, and then either snapping back to the original location or set a new desired location. 
+     */
+
+    /*
+    Elastic rate use case:
+
+    In virtual environment, user use joystick controller to walk around.
+    */
+
+    /*
+    Elastic acceleration use case:
+
+    In virtual environment, user is a spaceman with astronaut propulsion unit and use joystick controller to navigate, once the joystick snap back, user would just drift into space
+    */
+
+
+
+
 
     // YOUR EXPLANATION - END
 
