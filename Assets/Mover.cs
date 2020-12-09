@@ -225,10 +225,18 @@ public class Mover : MonoBehaviour
         //detect if the joystick snap, values less than the range are mapped to neutral(indicate the joystick is snapped) 
         if (Mathf.Abs(Input.GetAxis("Horizontal")) < Mathf.Abs(0.19f) && Mathf.Abs(Input.GetAxis("Vertical")) < Mathf.Abs(0.19f)) {
 
-            //set the birf back to starting position
+            //set the bird back to starting position
             transform.localPosition = new Vector3(0, 0, 0);
             X = 0;
             Y = 0;
+       
+            /* 
+            // Moves bird smoothly toward target (starting position)
+            float speed = 3.0f;
+            float step = speed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(0, 0, 0), step);
+            */
+        }
            
             
         }
