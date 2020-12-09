@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SpaceNavigatorDriver;
@@ -16,6 +16,12 @@ public class Mover : MonoBehaviour
     private GameObject mainCamera;
 
     private bool spacemouse_flag = true;
+
+    public float birdieSpeedX;
+    public float birdieSpeedY;
+
+    public float birdieAccelerationX;
+    public float birdieAccelerationY;
 
     // Start is called before the first frame update
     void Start()
@@ -111,34 +117,66 @@ public class Mover : MonoBehaviour
     void IsotonicRate(float X, float Y)
     {
         // YOUR CODE - BEGIN
-
-        // YOUR CODE - END    
+        float rateFactor = 0.1f;
+        birdieSpeedX += X;
+        birdieSpeedY += Y;
+        transform.Translate(birdieSpeedX * rateFactor * Time.deltaTime, birdieSpeedY * rateFactor * Time.deltaTime, 0);
+        // YOUR CODE - END   
     }
 
     void IsotonicAcceleration(float X, float Y)
     {
         // YOUR CODE - BEGIN
+        birdieSpeedX += X;
+        birdieSpeedY += Y;
+        // Debug.Log("Birdie Speed X: " + birdieSpeedX );
 
+        birdieAccelerationX += birdieSpeedX;
+        birdieAccelerationY += birdieSpeedY;
+        // Debug.Log("Birdie Acceleration X: " + birdieAccelerationX );
+
+        float accelerationFactor = 0.0005f;
+
+        transform.Translate(birdieAccelerationX * accelerationFactor * Time.deltaTime, birdieAccelerationY * accelerationFactor * Time.deltaTime, 0);
         // YOUR CODE - END
     }
 
     void ElasticPosition(float X, float Y)
     {
         // YOUR CODE - BEGIN
-
+        float elasticPositionfactor = 0.05f;
+        transform.Translate(X * elasticPositionfactor, Y  * elasticPositionfactor, 0.0f);
+        if (X == 0 && Y == 0) {
+            float speed = 3.0f;
+            float step = speed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(0, 0, 0), step);
+        }
         // YOUR CODE - END
     }
 
     void ElasticRate(float X, float Y)
     {
         // YOUR CODE - BEGIN
-
+        float elasticRateFactor = 0.05f;
+        birdieSpeedX += X;
+        birdieSpeedY += Y;
+        transform.Translate(birdieSpeedX * elasticRateFactor * Time.deltaTime, birdieSpeedY * elasticRateFactor * Time.deltaTime, 0);
         // YOUR CODE - END
     }
     void ElasticAcceleration(float X, float Y)
     {
         // YOUR CODE - BEGIN
+        birdieSpeedX += X;
+        birdieSpeedY += Y;
+        // Debug.Log("Birdie Speed X: " + birdieSpeedX );
 
+        birdieAccelerationX += birdieSpeedX;
+        birdieAccelerationY += birdieSpeedY;
+        // Debug.Log("Birdie Acceleration X: " + birdieAccelerationX );
+
+        float accelerationFactor = 0.0005f;
+
+        transform.Translate(birdieAccelerationX * accelerationFactor * Time.deltaTime, birdieAccelerationY * accelerationFactor * Time.deltaTime, 0);
         // YOUR CODE - END
     }
 
@@ -224,6 +262,16 @@ public class Mover : MonoBehaviour
     //Come up with potential use cases for the six different combinations.Think in the context of object manipulation and viewpoint navigation.
     
     // YOUR EXPLANATION - BEGIN
+
+    // For controlling the position of the bird, the use of an isotonic device (i.e. mouse) and the IsotonicPosition function were more compatible. 
+    // An elastic device (i.e. Space Mouse) and the ElasticPosition function were less suitable for this task. 
+    // This is based on our own experience controlling the position of the bird, but primarily Zhai's findings (1995) on human performance with input control that demonstrate the difficulty of operating isometric position control.
+
+    // For controlling the velocity of the bird, the use of an elastic device and the ElasticRate function were more compatible. 
+    // An isotonic device and the IsotonicRate function were less suitable for this task. 
+    // Again we discovered this through our own experiences, but also the Zhai's findings that rate control is slightly easier with isometric devices.
+
+    // For controlling the acceleration of the bird, we made the same observations as controlling the velocity of the bird.
 
     // YOUR EXPLANATION - END
 
