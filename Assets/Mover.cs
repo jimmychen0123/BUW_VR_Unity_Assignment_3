@@ -394,7 +394,17 @@ public class Mover : MonoBehaviour
     //Come up with potential use cases for the six different combinations.Think in the context of object manipulation and viewpoint navigation.
 
     // YOUR EXPLANATION - BEGIN
+    /* For controlling the position of the bird, the use of an isotonic device (i.e. mouse) and the IsotonicPosition function were more compatible. 
+    An elastic device (i.e. Space Mouse) and the ElasticPosition function were less suitable for this task. 
+    This is based on our own experience controlling the position of the bird, but primarily Zhai's findings (1995) on human performance with input control that demonstrate the difficulty of operating isometric position control.
 
+    For controlling the velocity of the bird, the use of an elastic device and the ElasticRate function were more compatible. 
+    An isotonic device and the IsotonicRate function were less suitable for this task. 
+    Again we discovered this through our own experiences, but also the Zhai's findings that rate control is slightly easier with isometric devices.
+
+    For controlling the acceleration of the bird, we made the same observations as controlling the velocity of the bird.
+    */
+    
     /*
     Isotonic position use case:
 
