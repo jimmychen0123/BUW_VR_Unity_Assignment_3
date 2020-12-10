@@ -126,6 +126,37 @@ public class Mover : MonoBehaviour
     {
         // YOUR CODE - BEGIN
 
+        /* Moving a joystick in one direction with position control and then releasing it leads to snap back to starting position
+         */
+        Debug.Log("Value of Input.GetAxis Horizontal: " + Input.GetAxis("Horizontal") + " Value of Input.GetAxis Vertical: " + Input.GetAxis("Vertical"));
+
+        float speedFactor = 2.0f;
+        speedFactor *= Time.deltaTime;
+        
+        //detect if the joystick snap, values less than the range are mapped to neutral(indicate the joystick is snapped) 
+        if (Mathf.Abs(Input.GetAxis("Horizontal")) < Mathf.Abs(0.19f) && Mathf.Abs(Input.GetAxis("Vertical")) < Mathf.Abs(0.19f)) {
+
+            //set the birf back to starting position
+            transform.localPosition = new Vector3(0, 0, 0);
+            X = 0;
+            Y = 0;
+            
+            /* 
+            // Moves bird smoothly toward target (starting position)
+            float speed = 3.0f;
+            float step = speed * Time.deltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(0, 0, 0), step);
+            */   
+        }
+        else
+        {
+            transform.Translate(X * speedFactor, Y * speedFactor, 0.0f);
+
+        };
+
+            
+
+
         // YOUR CODE - END
     }
 
@@ -224,6 +255,18 @@ public class Mover : MonoBehaviour
     //Come up with potential use cases for the six different combinations.Think in the context of object manipulation and viewpoint navigation.
     
     // YOUR EXPLANATION - BEGIN
+    
+    /* 
+    For controlling the position of the bird, the use of an isotonic device (i.e. mouse) and the IsotonicPosition function were more compatible. 
+    An elastic device (i.e. Space Mouse) and the ElasticPosition function were less suitable for this task. 
+    This is based on our own experience controlling the position of the bird, but primarily Zhai's findings (1995) on human performance with input control that demonstrate the difficulty of operating isometric position control.
+
+    For controlling the velocity of the bird, the use of an elastic device and the ElasticRate function were more compatible. 
+    An isotonic device and the IsotonicRate function were less suitable for this task. 
+    Again we discovered this through our own experiences, but also the Zhai's findings that rate control is slightly easier with isometric devices.
+
+    For controlling the acceleration of the bird, we made the same observations as controlling the velocity of the bird.
+    */
 
     // YOUR EXPLANATION - END
 
