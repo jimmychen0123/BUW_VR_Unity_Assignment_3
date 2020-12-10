@@ -4,7 +4,6 @@ using UnityEngine;
 using SpaceNavigatorDriver;
 using UnityEngine.UI;
 
-
 public class Mover : MonoBehaviour
 {
     private int mode = 0;    
@@ -16,30 +15,7 @@ public class Mover : MonoBehaviour
     private GameObject birdie;
     private GameObject mainCamera;
 
-    private bool spacemouse_flag = false;
-
-
-    // YOUR CODE - BEGIN
-    
-    //Exercies3.2:initiate two variables to store the bird’s velocity over frames
-    
-    float currentAxisX = 0.0f;
-    float currentAxisY = 0.0f;
-
-    //Exercise3.3
-    float currentAccelerationX = 0.0f;
-    float currentAccelerationY = 0.0f;
-
-    float currentSpeedX = 0.0f;
-    float currentSpeedY = 0.0f;
-
-    //Exercise3.5
-    float speedX = 0.0f;
-    float speedY = 0.0f;
-
-
-
-    // YOUR CODE - END
+    private bool spacemouse_flag = true;
 
     // Start is called before the first frame update
     void Start()
@@ -56,7 +32,6 @@ public class Mover : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      
         UpdateMode();
         InputMapping();
 
@@ -96,7 +71,6 @@ public class Mover : MonoBehaviour
         }
         else // elastic input from joystick/gamepad
         {
-
             elasticX = Input.GetAxis("Horizontal") * 0.15f;
             elasticY = Input.GetAxis("Vertical") * -0.15f;
         }
@@ -138,76 +112,12 @@ public class Mover : MonoBehaviour
     {
         // YOUR CODE - BEGIN
 
-        /* moving the mouse in a certain direction results in a change of the bird’s velocity, which is in turn applied to a change of the
-         bird’s position every frame. When the mouse stops moving, the bird keeps moving with the previously defined velocity.
-         To stop the bird, the mouse needs to be moved back to its start position. */
-
-        Debug.Log("Value of isotonicX: " + X + " Value of isotonocY: " + Y);
-
-        //To store the velocity value 
-        currentAxisX += X;
-        currentAxisY += Y;
-
-        Debug.Log("Value of currentAxisX: " + currentAxisX + " Value of currentAxisY: " + currentAxisY);
-
-
-        //Set the scaling factor: speed
-        //Refrence: https://docs.unity3d.com/ScriptReference/Input.GetAxis.html
-        float speedFactor = 1.0f;
-        
-
-        /*
-        Time.deltaTime: The completion time in seconds since the last frame (Read Only).
-        This property provides the time between the current and previous frame.
-         */
-
-        //Make it move (meters per second) instead of (meters per frame)
-        speedFactor *= Time.deltaTime;
-
-        // Get translate value along x axis(h) and y axis(v) 
-        float h = speedFactor * currentAxisX;
-        float v = speedFactor * currentAxisY;
-
-        transform.Translate(h, v, 0.0f);
-
         // YOUR CODE - END    
     }
 
     void IsotonicAcceleration(float X, float Y)
     {
         // YOUR CODE - BEGIN
-        /*
-         * moving the mouse in a certain direction results in a change of the bird’s acceleration, which is applied to a change of the bird’s velocity every frame, 
-         * which is in turn applied to a change of the bird’s position every frame. 
-         * When the mouse stops moving, the bird keeps getting faster with respect to the previously defined acceleration. 
-         * To stop the bird, the mouse needs to be moved in the inverse direction for the same amount of time.
-         */
-        Debug.Log("Value of isotonicX: " + X + " Value of isotonocY: " + Y);
-
-        //To store the acceleration value in each frame
-        currentAccelerationX += X;
-        currentAccelerationY += Y;
-
-        //To store the speed value in each frame
-        currentSpeedX += currentAccelerationX;
-        currentSpeedY += currentAccelerationY;
-
-        Debug.Log("Value of currentSpeedX: " + currentSpeedX + " Value of currentSpeedY: " + currentSpeedY);
-
-
-        //Set the scaling factor: speed
-        float speedFactor = 0.0001f;
-        
-        
-        //Make it move (meters per second) instead of (meters per frame)
-        speedFactor *= Time.deltaTime;
-
-
-        // Get translate value along x axis(h) and y axis(v) 
-        float h = speedFactor * currentSpeedX;
-        float v = speedFactor * currentSpeedY;
-
-        transform.Translate(h, v, 0.0f);
 
         // YOUR CODE - END
     }
@@ -215,6 +125,7 @@ public class Mover : MonoBehaviour
     void ElasticPosition(float X, float Y)
     {
         // YOUR CODE - BEGIN
+
         /* Moving a joystick in one direction with position control and then releasing it leads to snap back to starting position
          */
         Debug.Log("Value of Input.GetAxis Horizontal: " + Input.GetAxis("Horizontal") + " Value of Input.GetAxis Vertical: " + Input.GetAxis("Vertical"));
@@ -245,74 +156,19 @@ public class Mover : MonoBehaviour
 
             
 
+
         // YOUR CODE - END
     }
 
     void ElasticRate(float X, float Y)
     {
         // YOUR CODE - BEGIN
-        Debug.Log("Value of Input.GetAxis Horizontal: " + Input.GetAxis("Horizontal") + " Value of Input.GetAxis Vertical: " + Input.GetAxis("Vertical"));
-        /*
-         * Moving a joystick in one direction with rate control and then releasing it leads to cursor stop
-         */
-
-        //when joystick snaps
-        if (Mathf.Abs(Input.GetAxis("Horizontal")) < Mathf.Abs(0.19f) && Mathf.Abs(Input.GetAxis("Vertical")) < Mathf.Abs(0.19f))
-        {
-
-            //stop translate the bird
-            X = 0;
-            Y = 0;
-
-
-        }
-        else
-        {
-            float speed = 2.0f;
-
-            speed *= Time.deltaTime;
-
-            transform.Translate(speed * X, speed * Y, 0.0f);
-
-        };
-       
-
-
 
         // YOUR CODE - END
     }
     void ElasticAcceleration(float X, float Y)
     {
         // YOUR CODE - BEGIN
-        /* Moving a joystick in one direction with acceleration control and then releasing it leads to
-         * the cursor move continuously with the adjusted velocity
-         */
-        Debug.Log("Value of Input.GetAxis Horizontal: " + Input.GetAxis("Horizontal") + " Value of Input.GetAxis Vertical: " + Input.GetAxis("Vertical"));
-        Debug.Log("Value of X: " + X + " Value of Y: " + Y);
-
-        float speedFactor = 0.05f;
-        speedFactor *= Time.deltaTime;
-
-        if (Mathf.Abs(Input.GetAxis("Horizontal")) < Mathf.Abs(0.19f) && Mathf.Abs(Input.GetAxis("Vertical")) < Mathf.Abs(0.19f))
-        {
-
-            
-            //cursor move with constant velocity after joystick snaps
-            transform.Translate(speedFactor * speedX, speedFactor * speedY, 0.0f);
-
-
-        }
-        else
-        {
-            //Acceleration 
-            speedX += X;
-            speedY += Y;
-
-            transform.Translate(speedFactor * speedX, speedFactor * speedY, 0.0f);
-
-        };
-
-        
 
         // YOUR CODE - END
     }
@@ -397,7 +253,7 @@ public class Mover : MonoBehaviour
     // Excercise 3.7:
     // Which combinations were suitable for this task, which combinations were less suitable? Why? 
     //Come up with potential use cases for the six different combinations.Think in the context of object manipulation and viewpoint navigation.
-
+    
     // YOUR EXPLANATION - BEGIN
     
     /* 
@@ -411,46 +267,6 @@ public class Mover : MonoBehaviour
 
     For controlling the acceleration of the bird, we made the same observations as controlling the velocity of the bird.
     */
-
-    /*
-    Isotonic position use case:
-
-    In a virtual environment, a user takes one teapot and move it from top left corner of cupboard to bottom right. 
-     */
-
-    /*
-    Isotonic rate use case:
-
-    In a virtual environment, a space women in her capsule grabs a paper airplane and launch it. The paper airplane would keep moving with the previously defined velocity.  
-     */
-
-    /*
-    Isotonic acceleration use case:
-
-    Simulation in a virtual environment, user use virtual slider to set the object’s acceleration for experiment purpose.
-     */
-
-    /*
-    Elastic position use case:
-
-    Editing 360 video in immersive environment, editor would like to have a quick preview of fast-forwarding the video, and then either snapping back to the original location or set a new desired location. 
-     */
-
-    /*
-    Elastic rate use case:
-
-    In virtual environment, user use joystick controller to walk around.
-    */
-
-    /*
-    Elastic acceleration use case:
-
-    In virtual environment, user is a spaceman with astronaut propulsion unit and use joystick controller to navigate, once the joystick snap back, user would just drift into space
-    */
-
-
-
-
 
     // YOUR EXPLANATION - END
 
